@@ -6,7 +6,8 @@ Rest API para gestionar tareas de usuarios.
 
 Contexto: Imagine que está construyendo una aplicación de gestión de tareas.  
 Necesita crear una API REST para gestionar las tareas de los usuarios.  
-Cada tarea tiene un título, una descripción y un estado (pendiente, en progreso, completada, eliminada).
+Cada tarea tiene un título, una descripción y un estado (pendiente, en progreso, completada, eliminada).  
+Requisitos:
 
 - Crear una nueva tarea.
 - Leer una lista de todas las tareas.
@@ -50,34 +51,49 @@ Cada tarea tiene un título, una descripción y un estado (pendiente, en progres
 | PATCH       | /users/:id              | Update a user by ID                                |
 | DELETE      | /users/:id              | Delete a user by ID                                |
 
-## Running locally
+## Correr localmente
 
-Necesitas tener Docker instalado para ejecutar una base de datos de Postgres local.
+**⚠️ IMPORTANTE:** Necesitas tener Docker instalado para ejecutar una base de datos Postgres localmente.
+
+### Clonar el repo e instalar dependencias
 
 ```bash
-# clone repo and install dependencies
-$ git clone https://github.com/nico-bt/tasks-api.git
-$ npm install
+git clone https://github.com/nico-bt/tasks-api.git
+npm install
+```
 
-# Start local database with docker
-$ npm run db:start
+### Configuración archivo .env
 
-# Start the app
-$ npm run start:dev
+Para configurar las variables de entorno, crea un archivo `.env` en el directorio raíz con el siguiente contenido:
 
-# Once you finish, to put down container:
-# (will terminate both dev and test databases)
-$ docker compose down
+```plaintext
+DATABASE_USER=postgres
+DATABASE_PASSWORD=postgres
+DATABASE_NAME=postgres
+DATABASE_PORT=5432
+DATABASE_HOST=localhost
+```
+
+### Iniciar base de datos local con Docker
+
+```bash
+docker compose up -d
+```
+
+### Correr la app en modo desarrollo
+
+```bash
+npm run start:dev
+```
+
+### Para cerrar la base de datos en Docker al terminar
+
+```bash
+docker compose down
 ```
 
 ## Tests
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-# You need the local database running of the previous step
-# If it is running do nothing, else run "npm run db:start" first
-$ npm run test:e2e
+npm run test
 ```
