@@ -4,15 +4,33 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Status, Task } from './entities/task.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class TaskService {
   constructor(
     @InjectRepository(Task) private readonly taskRepository: Repository<Task>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
-  create(createTaskDto: CreateTaskDto) {
+  async create(createTaskDto: CreateTaskDto) {
+    let user: User | undefined;
+
+    if (createTaskDto.userId) {
+      user = await this.userRepository.findOne({
+        where: { id: createTaskDto.userId },
+      });
+
+      if (!user) {
+        throw new NotFoundException(
+          `User with ID ${createTaskDto.userId} not found`,
+        );
+      }
+    }
     const task = this.taskRepository.create(createTaskDto);
+    if (user) {
+      task.user = user;
+    }
     return this.taskRepository.save(task);
   }
 

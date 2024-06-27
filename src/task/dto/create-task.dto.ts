@@ -8,6 +8,9 @@ export class CreateTaskDto {
   @IsString()
   description: string;
 
+  @IsOptional()
+  userId?: number;
+
   // Como se pide un servicio extra para cambiar status
   // asumo que la idea a futuro es que el user no pueda modificar el status y esto lo hará alguien más
   // Un admin o profesor?
