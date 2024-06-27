@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Descripción
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Rest API para gestionar tareas de usuarios.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Consigna
 
-## Description
+Contexto: Imagine que está construyendo una aplicación de gestión de tareas.  
+Necesita crear una API REST para gestionar las tareas de los usuarios.  
+Cada tarea tiene un título, una descripción y un estado (pendiente, en progreso, completada, eliminada).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Crear una nueva tarea.
+- Leer una lista de todas las tareas.
+- Leer una tarea específica por su ID.
+- Actualizar una tarea existente (título y descripción).
+- Borrar de manera lógica una tarea por su ID.
+- Implementa una ruta adicional para filtrar tareas por estado. Por ejemplo, /tareas/pendientes debería devolver todas las tareas pendientes.
+- Implementa servicios que permitan cambiar de estado una tarea en particular.
+- Implementa una lógica de negocio adicional que calcule el tiempo transcurrido desde la creación de una tarea en días. Puedes agregar una nueva ruta, por ejemplo, /tareas/:id/dias-transcurridos, que devuelva el número de días transcurridos desde la creación de la tarea con el ID proporcionado.
+- Utiliza una base de datos de tu elección (por ejemplo, MongoDB, MYSQL, etc.) para almacenar las tareas.
+- Desarrolle los tests unitarios sobre cada caso de uso.
 
-## Installation
+## Techs
+
+- Nest.js
+- TypeORM
+- PostgreSQL
+- Local db con Docker para correr en modo desarrollo y e2e tests
+
+## Entity Relationship Diagram
+
+![Entities Diagram](./tasks-er-diagram.png)
+
+## API Endpoints:
+
+| HTTP Method | Endpoint                | Description                                        |
+| ----------- | ----------------------- | -------------------------------------------------- |
+|             | **Tasks**               |                                                    |
+| POST        | /tasks                  | Create a new task                                  |
+| GET         | /tasks                  | Get all tasks                                      |
+| GET         | /tasks/:id              | Get a task by ID                                   |
+| PATCH       | /tasks/:id              | Update a task by ID                                |
+| DELETE      | /tasks/:id              | Delete a task by ID                                |
+| PATCH       | /tasks/:id/status       | Update the status of a task                        |
+| GET         | /tasks/status/:status   | Get tasks by status                                |
+| GET         | /tasks/:id/days-elapsed | Get the number of days elapsed since task creation |
+|             | **Users**               |                                                    |
+| POST        | /users                  | Create a new user                                  |
+| GET         | /users                  | Get all users                                      |
+| GET         | /users/:id              | Get a user by ID                                   |
+| PATCH       | /users/:id              | Update a user by ID                                |
+| DELETE      | /users/:id              | Delete a user by ID                                |
+
+## Running locally
+
+Necesitas tener Docker instalado para ejecutar una base de datos de Postgres local.
 
 ```bash
+# clone repo and install dependencies
+$ git clone https://github.com/nico-bt/tasks-api.git
 $ npm install
-```
 
-## Running the app
+# Start local database with docker
+$ npm run db:start
 
-```bash
-# development
-$ npm run start
-
-# watch mode
+# Start the app
 $ npm run start:dev
 
-# production mode
-$ npm run start:prod
+# Once you finish, to put down container:
+# (will terminate both dev and test databases)
+$ docker compose down
 ```
 
-## Test
+## Tests
 
 ```bash
 # unit tests
 $ npm run test
 
 # e2e tests
+# You need the local database running of the previous step
+# If it is running do nothing, else run "npm run db:start" first
 $ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
