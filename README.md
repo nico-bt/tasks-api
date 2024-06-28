@@ -80,6 +80,9 @@ DATABASE_HOST=localhost
 docker compose up -d
 ```
 
+Este comando levantará dos bases de datos locales.  
+Una para desarrollo (port 5432) y otra para correr los test e2e (port 5435)
+
 ### Correr la app en modo desarrollo
 
 ```bash
@@ -94,6 +97,18 @@ docker compose down
 
 ## Tests
 
+### Unit tests
+
 ```bash
 npm run test
+```
+
+### e2e Tests
+
+**⚠️ IMPORTANTE:** Los tests de integración usan una base de datos exclusiva a parte.  
+Por esto, para que funcionen tenés que tener corriendo el container de docker creado con:
+docker compose up -d
+
+```bash
+npm run test:e2e
 ```
