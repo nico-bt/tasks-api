@@ -158,13 +158,15 @@ describe('TaskController', () => {
   describe('getDaysElapsed', () => {
     it('should return the number of days elapsed since the task was created', async () => {
       const daysElapsed = 5;
-      jest.spyOn(taskService, 'getDaysElapsed').mockResolvedValue(daysElapsed);
+      jest
+        .spyOn(taskService, 'getDaysElapsed')
+        .mockResolvedValue({ elapsedDays: 5 });
 
       const result = await taskController.getDaysElapsed(
         mockCreatedTask.id.toString(),
       );
 
-      expect(result).toEqual(daysElapsed);
+      expect(result.elapsedDays).toEqual(daysElapsed);
       expect(taskService.getDaysElapsed).toHaveBeenCalledWith(
         mockCreatedTask.id,
       );

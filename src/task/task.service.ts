@@ -81,6 +81,6 @@ export class TaskService {
     const elapsedMilliseconds = currentDate.getTime() - createdAt.getTime();
     const elapsedDays = Math.round(elapsedMilliseconds / (1000 * 60 * 60 * 24));
 
-    return elapsedDays;
+    return { elapsedDays };
   }
 }

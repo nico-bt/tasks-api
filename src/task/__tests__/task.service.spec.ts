@@ -218,7 +218,7 @@ describe('TaskService', () => {
 
       const result = await taskService.getDaysElapsed(mockTaskInThePast.id);
 
-      expect(result).toBe(6);
+      expect(result.elapsedDays).toBe(6);
       expect(taskRepository.findOne).toHaveBeenCalledWith({
         where: { id: mockTaskInThePast.id },
       });
